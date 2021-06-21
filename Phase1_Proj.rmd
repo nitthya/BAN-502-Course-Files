@@ -1,0 +1,55 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+ames_student <- read_csv("ames_student.csv")
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+ames_student %>%
+        ggplot(aes(Year_Built)) +
+        geom_histogram(bins =30, fill = "lightblue", color = "black") +
+        geom_vline(aes(xintercept = mean(Year_Built), 
+                   color = "mean"), linetype = "dashed", size = 1) +
+        geom_vline(aes(xintercept = median(Year_Built), 
+                   color = "median"), linetype = "dashed", size = 1) +
+        scale_color_manual(name = "Statistics", values = c(mean = "red", median = "darkgreen")) +
+        ggtitle("Histogram of Year Homes were Built in Ames") +
+        xlab("Year Built") + ylab("Number of Homes")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+ames_student %>%
+        ggplot(aes( y = Neighborhood, fill = Neighborhood)) +
+        geom_bar() +
+       
+        theme(legend.position = "none") +
+        xlab("Home Price (,000's)") +
+        theme(axis.title.y = element_blank())
+
+
+```
+
+### Chart C
+
+```{r}
+ggplot(ames_student, aes(x = Garage_Type, fill = Above_Median)) + geom_bar(position = "fill")
+
+```
